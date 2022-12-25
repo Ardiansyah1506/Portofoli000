@@ -18,19 +18,30 @@ VanillaTilt.init(document.querySelectorAll('.box'), {
     scale: 1.1
 });
 
-var text = "Ardiansyah";
-var index = 0;
-var a = 0;
+const textElement = document.getElementById('text');
+let index = 0;
+const messages = [
+    'Ardiansyah'
 
-
-a++;
+];
 
 function type() {
-    document.getElementById("text").innerHTML += text.charAt(index);
-    index++;
-    if (index > text.length - 1) {
-        clearInterval(typingInterval);
+    textElement.innerHTML += messages[index][textElement.innerHTML.length];
+    if (textElement.innerHTML.length === messages[index].length) {
+        clearInterval(interval);
+        setTimeout(() => {
+            interval = setInterval(backspace, 100);
+        }, 2000);
     }
-
 }
-var typingInterval = setInterval(type, 500)
+
+function backspace() {
+    textElement.innerHTML = textElement.innerHTML.substring(0, textElement.innerHTML.length - 1);
+    if (textElement.innerHTML.length === 0) {
+        clearInterval(interval);
+        index = index === messages.length - 1 ? 0 : index + 1;
+        interval = setInterval(type, 150);
+    }
+}
+
+let interval = setInterval(type, 150);
